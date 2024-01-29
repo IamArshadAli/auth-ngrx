@@ -22,4 +22,24 @@ export class UserService {
   duplicateUserName(username: string){
     return this.http.get<UserInfo[]>(this.APIBasedUrl+"?username="+username)
   }
+
+  setUserDataToLocalStorage(userData: UserInfo) {
+    localStorage.setItem("userData", JSON.stringify(userData));
+  }
+
+  getUserDataFromLocalStorage() {
+    let _userObj: UserInfo = {
+      username: '',
+      name: '',
+      email: '',
+      role: '',
+      status: false,
+    }
+    if(localStorage.getItem("userData") == null)
+      return _userObj;
+    
+    let jsonString = localStorage.getItem("userData") as string;
+    _userObj = JSON.parse(jsonString);
+    return _userObj;
+  }
 }

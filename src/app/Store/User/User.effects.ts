@@ -55,11 +55,13 @@ export class UserEffects {
                 message: 'Login Failed: Invalid Credentials',
                 resultType: 'fail',
               });
-            if (data[0].status === false)
+            const _userData = data[0];
+            if (_userData.status === false)
               return showAlert({
                 message: 'InActive User',
                 resultType: 'fail',
               });
+            this.userService.setUserDataToLocalStorage(_userData);
             this.route.navigate(['']);
             return showAlert({ message: 'Login Success', resultType: 'pass' });
           }),
