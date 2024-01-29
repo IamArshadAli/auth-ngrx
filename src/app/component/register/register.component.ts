@@ -8,7 +8,8 @@ import {
 import { Store } from '@ngrx/store';
 import { showAlert } from '../../Store/Common/App.action';
 import { Users } from '../../Store/Model/User.model';
-import { beginRegister } from '../../Store/User/User.action';
+import { beginRegister, duplicateUser } from '../../Store/User/User.action';
+import { isDuplicateUser } from '../../Store/User/User.selectors';
 
 @Component({
   selector: 'app-register',
@@ -52,6 +53,19 @@ export class RegisterComponent {
       else {
         this._store.dispatch(showAlert({message: "Passwords Mismatch", resultType: "fail"}))
       }
+    }
+  }
+
+  checkDuplicateUser() {
+    const username = this.registerForm.value.username as string;
+    if(username != "") {
+      this._store.dispatch(duplicateUser({username: username}));
+      this._store.select(isDuplicateUser).subscribe(item => {
+        let isExists = item
+        if(isExists){
+          this.registerForm.controls['username'].reset();
+        }
+      })
     }
   }
 }

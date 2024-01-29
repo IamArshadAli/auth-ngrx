@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Users } from '../Store/Model/User.model';
+import { UserCredentials, UserInfo, Users } from '../Store/Model/User.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,5 +13,13 @@ export class UserService {
 
   registerUser(userData: Users){
     return this.http.post(this.APIBasedUrl, userData)
+  }
+
+  loginUser(userData: UserCredentials){
+    return this.http.get<UserInfo[]>(this.APIBasedUrl+"?username="+userData.username+"&password="+userData.password)
+  }
+
+  duplicateUserName(username: string){
+    return this.http.get<UserInfo[]>(this.APIBasedUrl+"?username="+username)
   }
 }

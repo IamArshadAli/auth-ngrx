@@ -7,7 +7,7 @@
       <!-- UserName -->
       <mat-form-field>
         <mat-label>Username</mat-label>
-        <input type="text" placeholder="username" formControlName="username" matInput>
+        <input (blur)="checkDuplicateUser()" type="text" placeholder="username" formControlName="username" matInput>
       </mat-form-field>
 
       <!-- Password -->
@@ -55,7 +55,7 @@
         <button type="submit" mat-raised-button color="primary">Submit</button>
       </div>
       <div class="div-50">
-        <button type="button" mat-raised-button color="accent">Cancel</button>
+        <a routerLink="/login" type="button" mat-raised-button color="accent">Back to Login</a>
       </div>
     </mat-card-actions>
   </mat-card>
