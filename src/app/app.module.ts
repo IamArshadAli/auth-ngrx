@@ -17,6 +17,7 @@ import { UserReducer } from './Store/User/User.reducers';
 import { AppEffects } from './Store/Common/App.effects';
 import { UserEffects } from './Store/User/User.effects';
 import { HttpClientModule } from '@angular/common/http';
+import { MenubarComponent } from './component/menubar/menubar.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
     RegisterComponent,
     LoginComponent,
     HomeComponent,
+    MenubarComponent,
   ],
   imports: [
     BrowserModule,
