@@ -6,6 +6,8 @@ import {
   beginRegister,
   duplicateUser,
   duplicateUserSuccess,
+  fetchMenu,
+  fetchMenuSuccess,
 } from './User.action';
 import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
 import { showAlert } from '../Common/App.action';
@@ -47,23 +49,30 @@ export class UserEffects {
   _userLogin = createEffect(() =>
     this.action$.pipe(
       ofType(beginLogin),
-      exhaustMap((action) => {
+      switchMap((action) => {
         return this.userService.loginUser(action.userCredentials).pipe(
-          map((data) => {
+          switchMap((data) => {
             if (!data.length)
-              return showAlert({
-                message: 'Login Failed: Invalid Credentials',
-                resultType: 'fail',
-              });
+              return of(
+                showAlert({
+                  message: 'Login Failed: Invalid Credentials',
+                  resultType: 'fail',
+                })
+              );
             const _userData = data[0];
             if (_userData.status === false)
-              return showAlert({
-                message: 'InActive User',
-                resultType: 'fail',
-              });
+              return of(
+                showAlert({
+                  message: 'InActive User',
+                  resultType: 'fail',
+                })
+              );
             this.userService.setUserDataToLocalStorage(_userData);
             this.route.navigate(['']);
-            return showAlert({ message: 'Login Success', resultType: 'pass' });
+            return of(
+              fetchMenu({ userRole: _userData.role }),
+              showAlert({ message: 'Login Success', resultType: 'pass' })
+            );
           }),
           catchError((_error) =>
             of(
@@ -99,6 +108,27 @@ export class UserEffects {
             of(
               showAlert({
                 message: 'Registration Failed due to: ' + _error.message,
+                resultType: 'fail',
+              })
+            )
+          )
+        );
+      })
+    )
+  );
+
+  _loadMenuByRole = createEffect(() =>
+    this.action$.pipe(
+      ofType(fetchMenu),
+      exhaustMap((action) => {
+        return this.userService.getMenuByUserRole(action.userRole).pipe(
+          map((data) => {
+            return fetchMenuSuccess({ menuList: data });
+          }),
+          catchError((_error) =>
+            of(
+              showAlert({
+                message: 'Failed to fetch Menu List',
                 resultType: 'fail',
               })
             )

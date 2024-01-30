@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserCredentials, UserInfo, Users } from '../Store/Model/User.model';
+import { RoleAccess, UserCredentials, UserInfo, Users } from '../Store/Model/User.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +42,13 @@ export class UserService {
     let jsonString = localStorage.getItem("userData") as string;
     _userObj = JSON.parse(jsonString);
     return _userObj;
+  }
+  
+  getMenuByUserRole(userRole: string): Observable<RoleAccess[]> {
+    return this.http.get<RoleAccess[]>("http://localhost:3000/roleaccess?role="+userRole)
+  }
+  
+  haveMenuAccess(userRole: string, menuRole: string): Observable<RoleAccess[]> {
+    return this.http.get<RoleAccess[]>("http://localhost:3000/roleaccess?role="+userRole+"&menu="+menuRole)
   }
 }

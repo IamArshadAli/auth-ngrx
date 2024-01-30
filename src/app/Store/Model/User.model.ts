@@ -25,6 +25,22 @@ export interface UserInfo {
     status: boolean;
 }
 
+export interface Roles {
+    code: string;
+    name: string;
+}
+
+export interface Menus {
+    code: string;
+    name: string;
+}
+
+export interface RoleAccess {
+    code: string;
+    menu: string;
+}
+
 export interface UserModel extends EntityState<Users> {
     isDuplicate: boolean;
+    menuList: RoleAccess[];
 }

@@ -1,10 +1,12 @@
 import { createAction, props } from '@ngrx/store';
-import { UserCredentials, Users } from '../Model/User.model';
+import { Menus, RoleAccess, UserCredentials, Users } from '../Model/User.model';
 
 export const BEGIN_REGISTER = '[auth] begin register';
 export const BEGIN_LOGIN = '[auth] begin login';
 export const DUPLICATE_USER = '[auth] duplicate user';
 export const DUPLICATE_USER_SUCCESS = '[auth] duplicate user success';
+export const FETCH_MENU = '[user] fetch menu';
+export const FETCH_MENU_SUCCESS = '[user] fetch menu success';
 
 export const beginRegister = createAction(
   BEGIN_REGISTER,
@@ -24,6 +26,16 @@ export const duplicateUser = createAction(
 export const duplicateUserSuccess = createAction(
   DUPLICATE_USER_SUCCESS,
   props<{ isDuplicate: boolean }>()
+);
+
+export const fetchMenu = createAction(
+  FETCH_MENU,
+  props<{ userRole: string }>()
+);
+
+export const fetchMenuSuccess = createAction(
+  FETCH_MENU_SUCCESS,
+  props<{ menuList: RoleAccess[] }>()
 );
 
 // https://github.com/nihira2020/angularngrxcrud/blob/master/src/app/app.module.ts
