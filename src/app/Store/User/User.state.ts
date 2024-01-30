@@ -5,4 +5,5 @@ export const userAdapter = createEntityAdapter<Users>();
 
 export const userState: UserModel = userAdapter.getInitialState({
     isDuplicate: false,
+    menuList: [],
 });
